@@ -1,33 +1,18 @@
 'use strict'
 
-/** @type {import('@adonisjs/framework/src/Env')} */
 const Env = use('Env')
 
 module.exports = {
-
-  /*
-  |--------------------------------------------------------------------------
-  | Application Name
-  |--------------------------------------------------------------------------
-  |
-  | This value is the name of your application and can used when you
-  | need to place the application's name in a email, view or
-  | other location.
-  |
-  */
-
-  name: Env.get('APP_NAME', 'AdonisJs'),
-
   /*
   |--------------------------------------------------------------------------
   | App Key
   |--------------------------------------------------------------------------
   |
   | App key is a randomly generated 16 or 32 characters long string required
-  | to encrypt cookies, sessions and other sensitive data.
+  | to encrypted cookies, sessions and other sensitive data.
   |
   */
-  appKey: Env.getOrFail('APP_KEY'),
+  appKey: Env.get('APP_KEY'),
 
   http: {
     /*
@@ -48,7 +33,7 @@ module.exports = {
     | Trust Proxy
     |--------------------------------------------------------------------------
     |
-    | Trust proxy defines whether X-Forwarded-* headers should be trusted or not.
+    | Trust proxy defines whether X-Forwaded-* headers should be trusted or not.
     | When your application is behind a proxy server like nginx, these values
     | are set automatically and should be trusted. Apart from setting it
     | to true or false Adonis supports handful or ways to allow proxy
@@ -82,7 +67,6 @@ module.exports = {
     */
     jsonpCallback: 'callback',
 
-
     /*
     |--------------------------------------------------------------------------
     | Etag
@@ -94,20 +78,7 @@ module.exports = {
     | response.send('Hello', { ignoreEtag: true })
     |
     */
-    etag: false
-  },
-
-  views: {
-    /*
-    |--------------------------------------------------------------------------
-    | Cache Views
-    |--------------------------------------------------------------------------
-    |
-    | Define whether or not to cache the compiled view. Set it to true in
-    | production to optimize view loading time.
-    |
-    */
-    cache: Env.get('CACHE_VIEWS', true)
+    etag: true
   },
 
   static: {
@@ -222,22 +193,5 @@ module.exports = {
       filename: 'adonis.log',
       level: 'info'
     }
-  },
-
-  /*
-  |--------------------------------------------------------------------------
-  | Generic Cookie Options
-  |--------------------------------------------------------------------------
-  |
-  | The following cookie options are generic settings used by AdonisJs to create
-  | cookies. However, some parts of the application like `sessions` can have
-  | separate settings for cookies inside `config/session.js`.
-  |
-  */
-  cookie: {
-    httpOnly: true,
-    sameSite: false,
-    path: '/',
-    maxAge: 7200
   }
 }

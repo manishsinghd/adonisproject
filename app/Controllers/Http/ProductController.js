@@ -1,98 +1,61 @@
 "use strict";
-import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
-const Customer = use("App/Models/Product");
-const Database = use("Database");
+const Product = use("App/Models/Product");
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
-
-/**
- * Resourceful controller for interacting with products
- */
 class ProductController {
-  /**
-   * Show a list of all products.
-   * GET products
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async index({ request, response, view }) {}
+  async index({ response }) {
+    let product = await Product.all();
 
-  /**
-   * Render a form to be used for creating a new product.
-   * GET products/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
+    response.status(200).json({
+      message: "Here are your products.",
+      data: product,
+    });
+  }
 
-  /**
-   * Create/save a new product.
-   * POST products
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async store({ request, response }: HttpContextContract) {
+  async store({ request, response }) {
     const { name } = request.post();
 
     // save and get instance back
     const product = await Product.create({ name });
 
     response.status(201).json({
-      message: "Successfully created a new customer.",
+      message: "Successfully created a new product.",
       data: product,
     });
   }
 
-  /**
-   * Display a single product.
-   * GET products/:idHttpContextContract
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
+  async show({ request, response, params: { id } }) {
+    let product1 = await Product.query().with("varinants").fetch();
 
-  async show({ params, request, response, view }) {}
+    response.status(200).json({
+      message: "Here is your product.",
 
-  /**
-   * Render a form to update an existing product.
-   * GET products/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
+      data: product1.find(id),
+    });
+  }
 
-  /**
-   * Update product details.
-   * PUT or PATCH products/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async update({ params, request, response }) {}
+  async update({ request, response }) {
+    const { name, product } = request.post();
 
-  /**
-   * Delete a product with id.
-   * DELETE products/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async destroy({ params, request, response }) {}
+    product.name = name;
+
+    await product.save();
+
+    response.status(200).json({
+      message: "Successfully updated this product.",
+      data: product,
+    });
+  }
+
+  async delete({ request, response, params: { id } }) {
+    const product = request.post().product;
+
+    await product.delete();
+
+    response.status(200).json({
+      message: "Successfully deleted this product.",
+      id,
+    });
+  }
 }
 
 module.exports = ProductController;
