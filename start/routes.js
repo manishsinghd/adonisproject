@@ -19,29 +19,24 @@ Route.get("/", ({ request, response }) => {
   response.json({
     greeting: "Hello world in JSON",
   });
-  //   return { greeting: 'Hello world in JSON' }
 });
 
-// Customers
 Route.get("products", "ProductController.index");
-Route.get("products/:id", "ProductController.show").middleware([
-  "findCustomer",
-]);
+Route.get("products/:id", "ProductController.show").middleware(["findProduct"]);
 Route.post("products", "ProductController.store");
 Route.patch("products/:id", "ProductController.update").middleware([
-  "findCustomer",
+  "findProduct",
 ]);
 Route.delete("products/:id", "ProductController.delete").middleware([
-  "findCustomer",
+  "findProduct",
 ]);
 
-// projects
 Route.get("variants", "VariantController.index");
-Route.get("variants/:id", "VariantController.show").middleware(["findProject"]);
+Route.get("variants/:id", "VariantController.show").middleware(["findVariant"]);
 Route.post("variants", "VariantController.store");
 Route.patch("variants/:id", "VariantController.update").middleware([
-  "findProject",
+  "findVariant",
 ]);
 Route.delete("variants/:id", "VariantController.delete").middleware([
-  "findProject",
+  "findVariant",
 ]);
